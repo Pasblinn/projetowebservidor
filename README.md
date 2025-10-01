@@ -1,6 +1,6 @@
 # Sistema de Gerenciamento de Biblioteca
 
-Sistema web desenvolvido em PHP seguindo o padrão MVC para gerenciar livros, membros e empréstimos de uma biblioteca.
+Sistema web desenvolvido em PHP para gerenciar livros, membros e empréstimos de uma biblioteca.
 
 ## Integrantes do Projeto
 
