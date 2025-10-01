@@ -1,0 +1,22 @@
+# Arquivo de configuração do Apache para reescrita de URLs
+# Habilita o módulo de reescrita
+RewriteEngine On
+
+# Redireciona todas as requisições para index.php
+# exceto arquivos e diretórios que realmente existem
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+
+# Define o tipo de conteúdo padrão como UTF-8
+AddDefaultCharset UTF-8
+
+# Configurações de segurança
+# Impede listagem de diretórios
+Options -Indexes
+
+# Bloqueia acesso aos arquivos de configuração
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
