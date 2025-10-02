@@ -9,7 +9,7 @@ Sistema web desenvolvido em PHP para gerenciar livros, membros e empréstimos de
 
 ## Descrição do Projeto
 
-Sistema completo de gerenciamento de biblioteca desenvolvido com arquitetura MVC (Model-View-Controller), permitindo o controle de livros, membros e empréstimos. O sistema utiliza PHP 8+ e não requer banco de dados, simulando o armazenamento através de arrays em sessão.
+Sistema completo de gerenciamento de biblioteca, permitindo o controle de livros, membros e empréstimos. O sistema utiliza PHP 8+ e não requer banco de dados, simulando o armazenamento através de arrays em sessão.
 
 ## Funcionalidades Implementadas
 
