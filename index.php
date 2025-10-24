@@ -1,62 +1,42 @@
 <?php
+
 /**
  * Ponto de entrada principal da aplicação
  * Sistema de Gerenciamento de Biblioteca
- * 
- * Este arquivo inicializa a aplicação, configura o roteamento
- * e direciona as requisições para os controladores adequados
+ *
+ * Este arquivo inicializa a aplicação, configura o ambiente
+ * e direciona as requisições através do sistema de rotas
  */
-
-// Inicia a sessão para controle de autenticação
-session_start();
 
 // Define o diretório raiz da aplicação
 define('ROOT_PATH', __DIR__);
 
-// Inclui os arquivos de configuração e classes necessárias
-require_once ROOT_PATH . '/config/config.php';
-require_once ROOT_PATH . '/includes/autoload.php';
+// Carrega o autoloader do Composer
+require_once ROOT_PATH . '/vendor/autoload.php';
 
-// Obtém a URL requisitada, removendo parâmetros GET se existirem
-$request = isset($_GET['url']) ? trim($_GET['url'], '/') : '';
+// Carrega variáveis de ambiente do arquivo .env
+$dotenv = Dotenv\Dotenv::createImmutable(ROOT_PATH);
+$dotenv->load();
 
-// Define o controlador padrão se nenhuma URL for especificada
-if (empty($request)) {
-    $request = 'home';
-}
+// Carrega funções auxiliares
+require_once ROOT_PATH . '/app/Helpers/functions.php';
 
-// Divide a URL em partes para identificar controlador e ação
-$url_parts = explode('/', $request);
-$controller_name = ucfirst($url_parts[0]) . 'Controller';
-$action = isset($url_parts[1]) ? $url_parts[1] : 'index';
+// Inicia a sessão para controle de autenticação
+session_start();
 
-// Caminho completo para o arquivo do controlador
-$controller_file = ROOT_PATH . '/app/controllers/' . $controller_name . '.php';
+// Define timezone conforme configuração
+date_default_timezone_set(env('TIMEZONE', 'America/Sao_Paulo'));
 
-// Verifica se o arquivo do controlador existe
-if (file_exists($controller_file)) {
-    // Inclui o controlador solicitado
-    require_once $controller_file;
-    
-    // Instancia o controlador se a classe existir
-    if (class_exists($controller_name)) {
-        $controller = new $controller_name();
-        
-        // Executa a ação solicitada se o método existir
-        if (method_exists($controller, $action)) {
-            $controller->$action();
-        } else {
-            // Ação não encontrada, executa index como fallback
-            $controller->index();
-        }
-    } else {
-        // Classe do controlador não encontrada
-        http_response_code(404);
-        echo "Controlador não encontrado";
-    }
+// Configurações de erro (apenas em desenvolvimento)
+if (env('APP_ENV') === 'development') {
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
 } else {
-    // Arquivo do controlador não existe
-    http_response_code(404);
-    echo "Página não encontrada";
+    ini_set('display_errors', 0);
+    error_reporting(0);
 }
-?>
+
+// Carrega e executa as rotas
+$router = require_once ROOT_PATH . '/app/Config/routes.php';
+$router->dispatch();

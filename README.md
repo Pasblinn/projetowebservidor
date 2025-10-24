@@ -1,207 +1,207 @@
 # Sistema de Gerenciamento de Biblioteca
 
-Sistema web desenvolvido em PHP para gerenciar livros, membros e empréstimos de uma biblioteca.
+**UTFPR - Campus Ponta Grossa**
+**Disciplina:** Web Servidor
+**Ano:** 2025
 
-## Integrantes do Projeto
-
-- **Pablo Juan Tadini Soto**
-- **Vinícius Istchuk Volpato**
-
-## Descrição do Projeto
-
-Sistema completo de gerenciamento de biblioteca, permitindo o controle de livros, membros e empréstimos. O sistema utiliza PHP 8+ e não requer banco de dados, simulando o armazenamento através de arrays em sessão.
-
-## Funcionalidades Implementadas
-
-### Autenticação
-- Sistema de login com validação
-- Controle de sessão com timeout
-- Logout seguro
-- Senhas criptografadas
-
-### Gerenciamento de Livros
-- Listagem completa de livros
-- Cadastro de novos livros
-- Edição de livros existentes
-- Exclusão de livros
-- Validações completas no servidor
-
-### Gerenciamento de Membros
-- Listagem completa de membros
-- Cadastro de novos membros
-- Edição de membros existentes
-- Exclusão de membros
-- Validações completas no servidor
-
-### Gerenciamento de Empréstimos
-- Sistema de controle de empréstimos
-- Registro de datas de empréstimo e devolução
-- Controle de status dos empréstimos
-
-### Dashboard
-- Página inicial com estatísticas
-- Resumo do sistema
-- Navegação intuitiva
-
-### Interface
-- Design responsivo com Bootstrap 5
-- Mensagens de feedback para usuário
-- Tratamento de erros
-- Formulários com validação
-
-## Distribuição de Atividades
-
-### Pablo Juan Tadini Soto
-- Desenvolvimento da arquitetura MVC
-- Implementação do sistema de autenticação
-- Desenvolvimento dos controllers (AuthController, BooksController, MembersController, LoansController)
-- Implementação das validações PHP
-- Sistema de roteamento e autoload
-- Configuração do ambiente e arquivos de configuração
-
-### Vinícius Istchuk Volpato
-- Desenvolvimento das views e interface do usuário
-- Implementação do layout responsivo
-- Criação dos modelos de dados (Database, User)
-- Desenvolvimento das páginas de CRUD (Books, Members, Loans)
-- Estilização e integração do Bootstrap
-- Testes e validação do sistema
-
-## Tecnologias Utilizadas
-
-- **PHP 8.0+**: Linguagem principal
-- **Apache**: Servidor web com mod_rewrite
-- **Bootstrap 5**: Framework CSS
-- **HTML5/CSS3**: Interface
-- **JavaScript**: Interatividade
-
-## Estrutura do Projeto
-
-```
-projetoweb-servidor/
-├── app/
-│   ├── controllers/          # Controladores (lógica de negócio)
-│   │   ├── AuthController.php
-│   │   ├── BooksController.php
-│   │   ├── DashboardController.php
-│   │   ├── HomeController.php
-│   │   ├── LoansController.php
-│   │   └── MembersController.php
-│   ├── models/              # Modelos (acesso aos dados)
-│   │   ├── Database.php
-│   │   └── User.php
-│   └── views/               # Views (interface do usuário)
-│       ├── auth/
-│       ├── books/
-│       ├── dashboard/
-│       ├── home/
-│       ├── layout/
-│       ├── loans/
-│       └── members/
-├── config/                  # Arquivos de configuração
-│   ├── config.php
-│   └── database.php
-├── css/                     # Estilos CSS
-├── images/                  # Imagens do sistema
-├── includes/               # Arquivos auxiliares
-│   └── autoload.php
-├── js/                     # JavaScript
-├── .htaccess               # Configuração Apache
-├── index.php               # Entrada principal
-├── INSTALACAO.md           # Documentação de instalação
-└── README.md               # Este arquivo
-```
-
-## Instalação e Configuração
-
-Consulte o arquivo [INSTALACAO.md](INSTALACAO.md) para instruções detalhadas de instalação e configuração do sistema.
-
-### Instalação Rápida
-
-1. **Copie o projeto** para o diretório do servidor web:
-   ```bash
-   # XAMPP Windows
-   C:\xampp\htdocs\projetoweb-servidor\
-
-   # XAMPP Linux
-   /opt/lampp/htdocs/projetoweb-servidor/
-   ```
-
-2. **Inicie o Apache** no XAMPP
-
-3. **Acesse o sistema**:
-   ```
-   http://localhost/projetoweb-servidor/
-   ```
-
-4. **Usuários de teste**:
-   - Admin: `admin` / `password`
-   - Bibliotecário: `bibliotecario` / `password`
-
-## Requisitos do Sistema
-
-- PHP 8.0 ou superior
-- Servidor Apache com mod_rewrite habilitado
-- Navegador web moderno
-
-## Particularidades e Observações
-
-### Armazenamento de Dados
-O sistema utiliza arrays PHP em sessão para simular um banco de dados, conforme especificação do projeto. Os dados persistem durante a sessão do navegador.
-
-### Validações
-Todas as validações são realizadas no servidor (PHP), garantindo segurança e integridade dos dados.
-
-### Segurança
-- Senhas criptografadas com `password_hash()`
-- Escape de dados HTML com `htmlspecialchars()`
-- Validação de entrada no servidor
-- Controle de sessão com timeout
-- Verificação de autenticação em todas as páginas protegidas
-
-### Funcionalidades Faltantes
-- Relatórios em PDF
-- Sistema de multas por atraso
-- Renovação automática de empréstimos
-- Sistema de reservas de livros
-
-### Bugs Conhecidos
-- Nenhum bug crítico identificado
-- Sistema totalmente funcional
-
-## Estrutura de URLs
-
-- `/` - Dashboard (página inicial)
-- `/auth` - Login
-- `/auth/logout` - Logout
-- `/books` - Lista de livros
-- `/books/create` - Novo livro
-- `/books/edit?id=X` - Editar livro
-- `/members` - Lista de membros
-- `/members/create` - Novo membro
-- `/members/edit?id=X` - Editar membro
-- `/loans` - Lista de empréstimos
-- `/loans/create` - Novo empréstimo
-
-## Solução de Problemas
-
-### Erro 404
-- Verifique se o mod_rewrite está habilitado no Apache
-- Confirme que o arquivo `.htaccess` existe no diretório raiz
-
-### CSS/JavaScript não carrega
-- Confirme que o BASE_URL está correto em `config/config.php`
-- Verifique se os arquivos CSS e JS estão nas pastas corretas
-
-### Erro de Sessão
-- Verifique se a sessão pode ser iniciada no PHP
-- Confirme as permissões do diretório de sessões
-
-## Licença
-
-Projeto acadêmico desenvolvido para a disciplina de Desenvolvimento Web.
+**Desenvolvido por:**
+- Pablo Juan Tadini Soto
+- Vinícius Istchuk Volpato
 
 ---
 
-**Versão**: 1.0
-**Data**: Outubro de 2025
+## Sobre o Projeto
+
+Este é um sistema web para gerenciar bibliotecas, desenvolvido em PHP usando orientação a objetos e banco de dados MySQL. O projeto permite cadastrar livros, membros e controlar empréstimos de forma completa.
+
+Começamos com uma versão mais simples e fomos melhorando ao longo do desenvolvimento, adicionando recursos mais avançados como rotas limpas, arquitetura MVC e integração com banco de dados real.
+
+## O que o sistema faz
+
+- **Gerenciar Livros:** cadastrar, editar, listar e remover livros do acervo
+- **Gerenciar Membros:** cadastro completo de pessoas que podem pegar livros emprestados
+- **Controlar Empréstimos:** registrar quando um livro é emprestado e quando é devolvido
+- **Sistema de Login:** só pessoas autorizadas podem acessar o sistema
+- **Dashboard:** painel com estatísticas e resumo do que está acontecendo na biblioteca
+
+## Tecnologias Usadas
+
+### Linguagens e Frameworks
+- PHP 8.0
+- MySQL (banco de dados)
+- HTML/CSS
+- JavaScript
+- Bootstrap 5 (para deixar bonito e responsivo)
+
+### Ferramentas
+- Composer (gerenciador de dependências do PHP)
+- Apache (servidor web)
+- PDO (para conectar com o banco de forma segura)
+
+## Estrutura do Código
+
+Organizamos o código seguindo o padrão MVC (Model-View-Controller):
+
+```
+app/
+├── Controllers/     # Lógica de controle (o que acontece quando clica em algo)
+├── Models/
+│   ├── Entities/    # Representam objetos (Livro, Membro, etc)
+│   └── Repositories/# Fazem as consultas no banco
+├── Core/            # Classes principais (Router, Database)
+├── views/           # Páginas HTML que o usuário vê
+└── Config/          # Configurações e rotas
+
+database/
+├── schema.sql       # Script que cria as tabelas
+└── seed.sql         # Dados de exemplo para testar
+```
+
+## Banco de Dados
+
+O sistema usa 4 tabelas principais:
+
+- **users** - usuários que podem fazer login
+- **books** - catálogo de livros
+- **members** - pessoas cadastradas que podem pegar livros
+- **loans** - registro de empréstimos (quem pegou qual livro e quando)
+
+## Como Funciona
+
+### Sistema de Rotas
+Implementamos um sistema próprio de rotas para ter URLs limpas:
+- `/books` - lista de livros
+- `/books/create` - cadastrar novo livro
+- `/members` - lista de membros
+- `/loans` - empréstimos
+
+Ao invés de URLs feias tipo `index.php?page=books&action=create`
+
+### Orientação a Objetos
+Todo o código usa classes e objetos. Por exemplo, quando buscamos um livro no banco, ele vira um objeto `Book` com métodos tipo `getTitulo()`, `getAutor()`, etc.
+
+### PDO e Segurança
+Usamos PDO com prepared statements em todas as consultas ao banco para prevenir SQL injection. As senhas são criptografadas com `password_hash()`.
+
+## Instalação
+
+**Requisitos:**
+- PHP 8.0 ou superior
+- MySQL
+- Apache com mod_rewrite
+- Composer
+
+**Passos:**
+
+1. Clone o repositório
+```bash
+git clone https://github.com/Pasblinn/projetowebservidor.git
+```
+
+2. Instale as dependências
+```bash
+composer install
+```
+
+3. Configure o banco de dados
+- Crie um banco chamado `biblioteca`
+- Execute o arquivo `database/schema.sql` para criar as tabelas
+- Execute `database/seed.sql` para adicionar dados de exemplo
+
+4. Configure o arquivo `.env`
+- Copie `.env.example` para `.env`
+- Ajuste as configurações de banco (host, usuário, senha)
+- Ajuste o `BASE_PATH` de acordo com onde você colocou o projeto
+
+5. Acesse no navegador
+```
+http://localhost/projetowebservidor/
+```
+
+**Login padrão:** usuário `admin`, senha `password`
+
+## Funcionalidades Principais
+
+### Livros
+- Listagem com todos os livros cadastrados
+- Formulário para adicionar novos livros
+- Edição de livros existentes
+- Exclusão de livros
+- Validação de ISBN único
+- Controle de quantidade disponível
+
+### Membros
+- Cadastro completo (nome, CPF, email, telefone, endereço)
+- Validação de CPF e email únicos
+- Categorização (estudante, professor, comunidade)
+- Listagem de todos os membros
+
+### Empréstimos
+- Registro de quando um livro é emprestado
+- Atualização automática da disponibilidade do livro
+- Registro de devolução
+- Listagem de empréstimos ativos
+- Identificação de empréstimos atrasados
+
+### Autenticação
+- Login seguro
+- Controle de sessão
+- Logout
+- Proteção de páginas (precisa estar logado para acessar)
+
+## Distribuição de Tarefas
+
+### Pablo Juan Tadini Soto
+Fiquei responsável pela parte mais técnica do backend:
+
+- Criei toda a estrutura de classes com namespaces e orientação a objetos
+- Implementei o sistema de rotas do zero (Router.php)
+- Fiz a integração com o banco usando PDO (Database.php com Singleton)
+- Desenvolvi as Entities (Book, Member, Loan, User) com getters e setters
+- Criei os Repositories para acesso ao banco
+- Implementei a lógica dos Controllers
+- Configurei o Composer com autoload PSR-4
+- Integrei o sistema de .env para configurações
+
+### Vinícius Istchuk Volpato
+Trabalhei mais na parte visual e banco de dados:
+
+- Desenvolvi todas as telas (views) em HTML
+- Integrei o Bootstrap para deixar responsivo
+- Criei os scripts SQL (schema.sql e seed.sql)
+- Fiz a parte de formulários e validação visual
+- Implementei o sistema de mensagens de sucesso e erro
+- Testei todas as funcionalidades
+- Ajudei na documentação
+
+## Observações Técnicas
+
+O projeto atende todos os requisitos da disciplina:
+- PHP 8+ com orientação a objetos
+- Composer com autoload (PSR-4)
+- Banco de dados MySQL via PDO
+- Sistema de rotas (URLs transparentes)
+- Padrão MVC
+- Validações no servidor
+- Interface adequada com feedback visual
+
+Tentamos seguir boas práticas de desenvolvimento, separando bem as responsabilidades de cada parte do código e pensando em segurança (principalmente contra SQL injection e XSS).
+
+## Melhorias ao Longo do Desenvolvimento
+
+Durante o desenvolvimento, fomos evoluindo o projeto:
+
+- Começamos guardando dados em arrays de sessão, depois migramos para banco de dados real
+- Melhoramos a organização do código, separando em camadas (MVC + Repository)
+- Adicionamos o Composer para gerenciar dependências
+- Criamos um sistema de rotas próprio para URLs mais limpas
+- Aplicamos tipagem forte nas classes para aproveitar recursos do PHP 8
+- Melhoramos a interface usando Bootstrap
+
+## Repositório
+
+https://github.com/Pasblinn/projetowebservidor
+
+---
+
+**Sistema de Gerenciamento de Biblioteca - 2025**

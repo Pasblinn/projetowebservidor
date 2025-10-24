@@ -1,11 +1,18 @@
 <?php
 /**
- * View para criar um novo livro
- * Esta página mostra o formulário para cadastrar um livro no sistema
+ * View para editar um livro existente
+ * Esta página mostra o formulário preenchido para editar um livro
  */
 
 // Define o título da página
-$title = 'Cadastrar Livro';
+$title = 'Editar Livro';
+
+// Suporta tanto Entity objects quanto arrays
+if (is_object($book)) {
+    $bookData = $book->toArray();
+} else {
+    $bookData = $book;
+}
 
 // Inclui o cabeçalho da página
 include dirname(__DIR__) . '/layout/header.php';
@@ -13,7 +20,7 @@ include dirname(__DIR__) . '/layout/header.php';
 
 <!-- Título da página -->
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>📚 Cadastrar Novo Livro</h2>
+    <h2>📝 Editar Livro</h2>
     <!-- Link para voltar à lista -->
     <a href="<?php echo base_url('books'); ?>" class="btn btn-secondary">
         ⬅️ Voltar para Lista
@@ -22,13 +29,16 @@ include dirname(__DIR__) . '/layout/header.php';
 
 <!-- Card com o formulário -->
 <div class="card">
-    <div class="card-header bg-success text-white">
-        <h5 class="mb-0">Dados do Livro</h5>
+    <div class="card-header bg-warning text-dark">
+        <h5 class="mb-0">Dados do Livro #<?php echo $bookData['id']; ?></h5>
     </div>
     <div class="card-body">
 
-        <!-- Formulário de cadastro - envia via POST para books/store -->
-        <form action="<?php echo base_url('books/store'); ?>" method="POST">
+        <!-- Formulário de edição - envia via POST para books/update -->
+        <form action="<?php echo base_url('books/update'); ?>" method="POST">
+
+            <!-- Campo hidden com ID do livro -->
+            <input type="hidden" name="id" value="<?php echo $bookData['id']; ?>">
 
             <div class="row">
                 <!-- Campo Título -->
@@ -41,7 +51,7 @@ include dirname(__DIR__) . '/layout/header.php';
                         class="form-control"
                         id="titulo"
                         name="titulo"
-                        value="<?php echo escape(old('titulo')); ?>"
+                        value="<?php echo escape(old('titulo', $bookData['titulo'])); ?>"
                         placeholder="Digite o título do livro"
                         required
                         maxlength="200"
@@ -58,7 +68,7 @@ include dirname(__DIR__) . '/layout/header.php';
                         class="form-control"
                         id="autor"
                         name="autor"
-                        value="<?php echo escape(old('autor')); ?>"
+                        value="<?php echo escape(old('autor', $bookData['autor'])); ?>"
                         placeholder="Nome do autor"
                         required
                         maxlength="150"
@@ -77,7 +87,7 @@ include dirname(__DIR__) . '/layout/header.php';
                         class="form-control"
                         id="isbn"
                         name="isbn"
-                        value="<?php echo escape(old('isbn')); ?>"
+                        value="<?php echo escape(old('isbn', $bookData['isbn'])); ?>"
                         placeholder="Ex: 9788525406626"
                         required
                         maxlength="20"
@@ -95,7 +105,7 @@ include dirname(__DIR__) . '/layout/header.php';
                         class="form-control"
                         id="editora"
                         name="editora"
-                        value="<?php echo escape(old('editora')); ?>"
+                        value="<?php echo escape(old('editora', $bookData['editora'])); ?>"
                         placeholder="Nome da editora"
                         required
                         maxlength="100"
@@ -114,7 +124,7 @@ include dirname(__DIR__) . '/layout/header.php';
                         class="form-control"
                         id="ano_publicacao"
                         name="ano_publicacao"
-                        value="<?php echo old('ano_publicacao'); ?>"
+                        value="<?php echo old('ano_publicacao', $bookData['ano_publicacao']); ?>"
                         placeholder="Ex: 2024"
                         required
                         min="1450"
@@ -128,31 +138,25 @@ include dirname(__DIR__) . '/layout/header.php';
                         <strong>Categoria:</strong> <span class="text-danger">*</span>
                     </label>
                     <select class="form-control" id="categoria" name="categoria" required>
+                        <?php
+                        $categorias = [
+                            'Literatura Brasileira',
+                            'Literatura Estrangeira',
+                            'Ficção Científica',
+                            'Romance',
+                            'Fantasia',
+                            'Técnico',
+                            'História',
+                            'Biografia'
+                        ];
+                        $selectedCategoria = old('categoria', $bookData['categoria']);
+                        ?>
                         <option value="">Selecione uma categoria</option>
-                        <option value="Literatura Brasileira" <?php echo (old('categoria') == 'Literatura Brasileira') ? 'selected' : ''; ?>>
-                            Literatura Brasileira
-                        </option>
-                        <option value="Literatura Estrangeira" <?php echo (old('categoria') == 'Literatura Estrangeira') ? 'selected' : ''; ?>>
-                            Literatura Estrangeira
-                        </option>
-                        <option value="Ficção Científica" <?php echo (old('categoria') == 'Ficção Científica') ? 'selected' : ''; ?>>
-                            Ficção Científica
-                        </option>
-                        <option value="Romance" <?php echo (old('categoria') == 'Romance') ? 'selected' : ''; ?>>
-                            Romance
-                        </option>
-                        <option value="Fantasia" <?php echo (old('categoria') == 'Fantasia') ? 'selected' : ''; ?>>
-                            Fantasia
-                        </option>
-                        <option value="Técnico" <?php echo (old('categoria') == 'Técnico') ? 'selected' : ''; ?>>
-                            Técnico
-                        </option>
-                        <option value="História" <?php echo (old('categoria') == 'História') ? 'selected' : ''; ?>>
-                            História
-                        </option>
-                        <option value="Biografia" <?php echo (old('categoria') == 'Biografia') ? 'selected' : ''; ?>>
-                            Biografia
-                        </option>
+                        <?php foreach ($categorias as $cat): ?>
+                            <option value="<?php echo $cat; ?>" <?php echo ($selectedCategoria == $cat) ? 'selected' : ''; ?>>
+                                <?php echo $cat; ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
 
@@ -166,12 +170,13 @@ include dirname(__DIR__) . '/layout/header.php';
                         class="form-control"
                         id="quantidade_total"
                         name="quantidade_total"
-                        value="<?php echo old('quantidade_total', '1'); ?>"
+                        value="<?php echo old('quantidade_total', $bookData['quantidade_total']); ?>"
                         placeholder="Quantidade de exemplares"
                         required
                         min="1"
                         max="100"
                     >
+                    <div class="form-text">Disponível: <?php echo $bookData['quantidade_disponivel']; ?></div>
                 </div>
             </div>
 
@@ -185,7 +190,7 @@ include dirname(__DIR__) . '/layout/header.php';
                     class="form-control"
                     id="localizacao"
                     name="localizacao"
-                    value="<?php echo escape(old('localizacao')); ?>"
+                    value="<?php echo escape(old('localizacao', $bookData['localizacao'])); ?>"
                     placeholder="Ex: A-001, Estante 5, etc."
                     required
                     maxlength="50"
@@ -197,8 +202,8 @@ include dirname(__DIR__) . '/layout/header.php';
             <div class="row">
                 <div class="col-12">
                     <!-- Botão para salvar -->
-                    <button type="submit" class="btn btn-success">
-                        💾 Cadastrar Livro
+                    <button type="submit" class="btn btn-warning">
+                        💾 Atualizar Livro
                     </button>
 
                     <!-- Botão para cancelar -->
@@ -221,7 +226,7 @@ include dirname(__DIR__) . '/layout/header.php';
 </div>
 
 <?php
-// Remove os dados antigos da sessão para não aparecer em outros formulários
+// Remove os dados antigos da sessão
 if (isset($_SESSION['old_input'])) {
     unset($_SESSION['old_input']);
 }

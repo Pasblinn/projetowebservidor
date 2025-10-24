@@ -12,3 +12,11 @@ Thumbs.db
 # Temporários
 *.log
 *.tmp
+
+# Composer
+/vendor/
+composer.phar
+composer.lock
+
+# Environment
+.env

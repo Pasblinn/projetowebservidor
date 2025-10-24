@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo isset($title) ? $title . ' - ' : ''; ?><?php echo APP_NAME; ?></title>
-    
+    <title><?php echo isset($title) ? $title . ' - ' : ''; ?><?php echo env('APP_NAME', 'Sistema de Biblioteca'); ?></title>
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- Custom CSS -->
-    <link href="<?php echo BASE_URL; ?>css/style.css" rel="stylesheet">
+    <link href="<?php echo base_url('css/style.css'); ?>" rel="stylesheet">
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <!-- Logo/Brand -->
-            <a class="navbar-brand" href="<?php echo BASE_URL; ?>dashboard">
-                📚 <?php echo APP_NAME; ?>
+            <a class="navbar-brand" href="<?php echo base_url('dashboard'); ?>">
+                📚 <?php echo env('APP_NAME', 'Sistema de Biblioteca'); ?>
             </a>
             
             <!-- Toggle button para mobile -->
@@ -31,16 +31,16 @@
                     <!-- Menu para usuários logados -->
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo BASE_URL; ?>dashboard">Dashboard</a>
+                            <a class="nav-link" href="<?php echo base_url('dashboard'); ?>">Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo BASE_URL; ?>books">Livros</a>
+                            <a class="nav-link" href="<?php echo base_url('books'); ?>">Livros</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo BASE_URL; ?>members">Membros</a>
+                            <a class="nav-link" href="<?php echo base_url('members'); ?>">Membros</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo BASE_URL; ?>loans">Empréstimos</a>
+                            <a class="nav-link" href="<?php echo base_url('loans'); ?>">Empréstimos</a>
                         </li>
                     </ul>
                     
@@ -53,7 +53,7 @@
                             <ul class="dropdown-menu">
                                 <li><span class="dropdown-header">Tipo: <?php echo ucfirst($_SESSION['tipo']); ?></span></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>auth/logout">Logout</a></li>
+                                <li><a class="dropdown-item" href="<?php echo base_url('auth/logout'); ?>">Logout</a></li>
                             </ul>
                         </li>
                     </ul>

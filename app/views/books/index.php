@@ -8,14 +8,14 @@
 $title = 'Lista de Livros';
 
 // Inclui o cabeçalho da página
-include ROOT_PATH . '/app/views/layout/header.php';
+include dirname(__DIR__) . '/layout/header.php';
 ?>
 
 <!-- Título da página -->
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>📚 Lista de Livros</h2>
     <!-- Botão para adicionar novo livro -->
-    <a href="<?php echo BASE_URL; ?>books/create" class="btn btn-success">
+    <a href="<?php echo base_url('books/create'); ?>" class="btn btn-success">
         ➕ Novo Livro
     </a>
 </div>
@@ -49,61 +49,67 @@ include ROOT_PATH . '/app/views/layout/header.php';
             </thead>
             <!-- Corpo da tabela -->
             <tbody>
-                <?php 
+                <?php
                 // Loop para percorrer todos os livros e mostrar cada um em uma linha
-                foreach ($books as $book): 
+                foreach ($books as $book):
+                    // Suporta tanto Entity objects quanto arrays
+                    if (is_object($book)) {
+                        $bookData = $book->toArray();
+                    } else {
+                        $bookData = $book;
+                    }
                 ?>
                     <tr>
                         <!-- Mostra o ID do livro -->
-                        <td><?php echo $book['id']; ?></td>
-                        
+                        <td><?php echo $bookData['id']; ?></td>
+
                         <!-- Mostra o título (escapa HTML para segurança) -->
-                        <td><?php echo htmlspecialchars($book['titulo']); ?></td>
-                        
+                        <td><?php echo escape($bookData['titulo']); ?></td>
+
                         <!-- Mostra o autor -->
-                        <td><?php echo htmlspecialchars($book['autor']); ?></td>
-                        
+                        <td><?php echo escape($bookData['autor']); ?></td>
+
                         <!-- Mostra o ISBN -->
-                        <td><?php echo htmlspecialchars($book['isbn']); ?></td>
-                        
+                        <td><?php echo escape($bookData['isbn']); ?></td>
+
                         <!-- Mostra a editora -->
-                        <td><?php echo htmlspecialchars($book['editora']); ?></td>
-                        
+                        <td><?php echo escape($bookData['editora']); ?></td>
+
                         <!-- Mostra o ano de publicação -->
-                        <td><?php echo $book['ano_publicacao']; ?></td>
-                        
+                        <td><?php echo $bookData['ano_publicacao']; ?></td>
+
                         <!-- Mostra a categoria -->
                         <td>
                             <span class="badge bg-secondary">
-                                <?php echo htmlspecialchars($book['categoria']); ?>
+                                <?php echo escape($bookData['categoria']); ?>
                             </span>
                         </td>
-                        
+
                         <!-- Mostra quantidade total -->
-                        <td><?php echo $book['quantidade_total']; ?></td>
-                        
+                        <td><?php echo $bookData['quantidade_total']; ?></td>
+
                         <!-- Mostra quantidade disponível com cor baseada na disponibilidade -->
                         <td>
-                            <?php if ($book['quantidade_disponivel'] > 0): ?>
-                                <span class="badge bg-success"><?php echo $book['quantidade_disponivel']; ?></span>
+                            <?php if ($bookData['quantidade_disponivel'] > 0): ?>
+                                <span class="badge bg-success"><?php echo $bookData['quantidade_disponivel']; ?></span>
                             <?php else: ?>
                                 <span class="badge bg-danger">0</span>
                             <?php endif; ?>
                         </td>
-                        
+
                         <!-- Mostra a localização -->
-                        <td><?php echo htmlspecialchars($book['localizacao']); ?></td>
-                        
+                        <td><?php echo escape($bookData['localizacao']); ?></td>
+
                         <!-- Botões de ação (editar e excluir) -->
                         <td>
                             <!-- Link para editar o livro -->
-                            <a href="<?php echo BASE_URL; ?>books/edit?id=<?php echo $book['id']; ?>" 
+                            <a href="<?php echo base_url('books/edit?id=' . $bookData['id']); ?>"
                                class="btn btn-sm btn-warning">
                                 ✏️ Editar
                             </a>
-                            
+
                             <!-- Link para excluir o livro (com confirmação JavaScript) -->
-                            <a href="<?php echo BASE_URL; ?>books/delete?id=<?php echo $book['id']; ?>" 
+                            <a href="<?php echo base_url('books/delete?id=' . $bookData['id']); ?>"
                                class="btn btn-sm btn-danger"
                                onclick="return confirm('Tem certeza que deseja excluir este livro?')">
                                 🗑️ Excluir
@@ -114,7 +120,7 @@ include ROOT_PATH . '/app/views/layout/header.php';
             </tbody>
         </table>
     </div>
-    
+
     <!-- Informações sobre o total de livros -->
     <div class="mt-3">
         <small class="text-muted">
@@ -125,5 +131,5 @@ include ROOT_PATH . '/app/views/layout/header.php';
 
 <?php
 // Inclui o rodapé da página
-include ROOT_PATH . '/app/views/layout/footer.php';
+include dirname(__DIR__) . '/layout/footer.php';
 ?>
