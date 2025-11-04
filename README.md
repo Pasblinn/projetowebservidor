@@ -85,40 +85,172 @@ Usamos PDO com prepared statements em todas as consultas ao banco para prevenir 
 
 ## Instalação
 
-**Requisitos:**
-- PHP 8.0 ou superior
-- MySQL
-- Apache com mod_rewrite
-- Composer
+### Requisitos do Sistema
 
-**Passos:**
+Antes de começar, certifique-se de ter instalado:
+- **PHP 8.0 ou superior** (testado com PHP 8.0.30)
+- **MySQL 5.7+** ou **MariaDB 10.3+**
+- **Apache 2.4+** com mod_rewrite habilitado
+- **Composer 2.0+** (gerenciador de dependências)
 
-1. Clone o repositório
+### Passo a Passo
+
+#### 1. Baixar o Projeto
+
+Clone o repositório:
 ```bash
 git clone https://github.com/Pasblinn/projetowebservidor.git
 ```
 
-2. Instale as dependências
+Ou baixe o ZIP e extraia para a pasta do seu servidor web:
+- **XAMPP Windows:** `C:\xampp\htdocs\projetowebservidor`
+- **Linux:** `/var/www/html/projetowebservidor`
+
+#### 2. Instalar Dependências com Composer
+
+Entre na pasta do projeto e execute:
 ```bash
+cd projetowebservidor
 composer install
 ```
 
-3. Configure o banco de dados
-- Crie um banco chamado `biblioteca`
-- Execute o arquivo `database/schema.sql` para criar as tabelas
-- Execute `database/seed.sql` para adicionar dados de exemplo
+Isso vai:
+- Baixar o package `vlucas/phpdotenv` (gerencia variáveis de ambiente)
+- Criar a pasta `vendor/` com todas as dependências
+- Configurar o autoload PSR-4
 
-4. Configure o arquivo `.env`
-- Copie `.env.example` para `.env`
-- Ajuste as configurações de banco (host, usuário, senha)
-- Ajuste o `BASE_PATH` de acordo com onde você colocou o projeto
+#### 3. Configurar o Banco de Dados
 
-5. Acesse no navegador
+**3.1. Criar o banco:**
+
+Via phpMyAdmin (http://localhost/phpmyadmin):
+1. Clique em "Novo"
+2. Nome: `biblioteca`
+3. Collation: `utf8mb4_unicode_ci`
+4. Clique em "Criar"
+
+Ou via linha de comando:
+```bash
+mysql -u root -p
+CREATE DATABASE biblioteca CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+EXIT;
 ```
-http://localhost/projetowebservidor/
+
+**3.2. Criar as tabelas:**
+
+No phpMyAdmin:
+1. Selecione o banco `biblioteca`
+2. Vá na aba "SQL"
+3. Abra o arquivo `database/schema.sql` e copie todo o conteúdo
+4. Cole e clique em "Executar"
+
+Ou via linha de comando:
+```bash
+mysql -u root -p biblioteca < database/schema.sql
 ```
 
-**Login padrão:** usuário `admin`, senha `password`
+Isso cria as 4 tabelas: `users`, `books`, `members` e `loans`
+
+**3.3. Inserir dados de exemplo:**
+
+Ainda no phpMyAdmin, aba "SQL":
+1. Copie o conteúdo de `database/seed.sql`
+2. Cole e execute
+
+Ou via linha de comando:
+```bash
+mysql -u root -p biblioteca < database/seed.sql
+```
+
+Isso adiciona 2 usuários, 5 livros, 3 membros e alguns empréstimos de exemplo.
+
+#### 4. Configurar o Arquivo .env
+
+**4.1. Copiar o modelo:**
+```bash
+cp .env.example .env
+```
+
+No Windows, copie manualmente `.env.example` e renomeie para `.env`
+
+**4.2. Editar as configurações:**
+
+Abra o arquivo `.env` e ajuste:
+
+```env
+# Configurações do Banco de Dados
+DB_HOST=localhost        # Endereço do MySQL (geralmente localhost)
+DB_PORT=3306            # Porta do MySQL (padrão: 3306)
+DB_DATABASE=biblioteca  # Nome do banco que você criou
+DB_USERNAME=root        # Seu usuário do MySQL
+DB_PASSWORD=            # Senha do MySQL (vazio no XAMPP padrão)
+
+# Configurações da Aplicação
+BASE_PATH=/projetowebservidor  # IMPORTANTE: ajuste conforme o nome da sua pasta
+```
+
+**Atenção ao BASE_PATH:**
+- Se sua pasta é `C:\xampp\htdocs\projetowebservidor` → use `BASE_PATH=/projetowebservidor`
+- Se sua pasta é `C:\xampp\htdocs\biblioteca` → use `BASE_PATH=/biblioteca`
+- Se está na raiz do htdocs → deixe vazio: `BASE_PATH=`
+
+#### 5. Configurar o Apache (mod_rewrite)
+
+O sistema usa URLs limpas, então precisa do mod_rewrite habilitado.
+
+**No XAMPP Windows:**
+1. Abra `C:\xampp\apache\conf\httpd.conf`
+2. Procure por `#LoadModule rewrite_module modules/mod_rewrite.so`
+3. Remova o `#` do início da linha
+4. Salve e reinicie o Apache no XAMPP Control Panel
+
+**No Linux:**
+```bash
+sudo a2enmod rewrite
+sudo systemctl restart apache2
+```
+
+#### 6. Verificar o arquivo .htaccess
+
+Na raiz do projeto, abra o arquivo `.htaccess` e confirme que a linha 4 está assim:
+```apache
+RewriteBase /projetowebservidor/
+```
+
+Ajuste para corresponder ao seu `BASE_PATH` (se sua pasta tem outro nome).
+
+#### 7. Acessar o Sistema
+
+Abra o navegador e vá para:
+```
+http://localhost/projetowebservidor
+```
+
+Você deve ver a tela de login!
+
+### Credenciais de Acesso
+
+Use para fazer login:
+- **Usuário:** `admin`
+- **Senha:** `admin123`
+
+Ou:
+- **Usuário:** `bibliotecario`
+- **Senha:** `admin123`
+
+### Problemas Comuns
+
+**Erro "vendor/autoload.php not found":**
+- Solução: Execute `composer install` na pasta do projeto
+
+**Erro "Access denied for user":**
+- Solução: Verifique as credenciais do MySQL no arquivo `.env`
+
+**Erro 404 nas páginas:**
+- Solução: Habilite o mod_rewrite do Apache (veja passo 5)
+
+**Páginas sem estilo (CSS):**
+- Solução: Ajuste o `BASE_PATH` no arquivo `.env`
 
 ## Funcionalidades Principais
 
