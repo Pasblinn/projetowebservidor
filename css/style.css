@@ -1,0 +1,176 @@
+/**
+ * Arquivo CSS personalizado para o Sistema de Gerenciamento de Biblioteca
+ * Estilos adicionais ao Bootstrap 5 para melhorar a aparência
+ */
+
+/* Estilos gerais do corpo */
+body {
+    background-color: #f8f9fa; /* Cor de fundo cinza claro */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fonte padrão */
+}
+
+/* Estilo para o cabeçalho principal */
+.navbar-brand {
+    font-weight: bold; /* Texto em negrito */
+    font-size: 1.3rem; /* Tamanho da fonte maior */
+}
+
+/* Estilos para os cards */
+.card {
+    border-radius: 10px; /* Bordas arredondadas */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Sombra sutil */
+    border: none; /* Remove borda padrão */
+}
+
+/* Estilo para cabeçalhos dos cards */
+.card-header {
+    border-radius: 10px 10px 0 0 !important; /* Arredonda apenas o topo */
+    font-weight: 600; /* Texto semi-negrito */
+}
+
+/* Estilos para botões */
+.btn {
+    border-radius: 6px; /* Bordas ligeiramente arredondadas */
+    font-weight: 500; /* Texto meio-negrito */
+    transition: all 0.3s ease; /* Transição suave para hover */
+}
+
+/* Efeito hover para botões */
+.btn:hover {
+    transform: translateY(-2px); /* Move ligeiramente para cima */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Sombra mais forte */
+}
+
+/* Estilos para a tabela */
+.table {
+    background-color: white; /* Fundo branco */
+    border-radius: 8px; /* Bordas arredondadas */
+    overflow: hidden; /* Esconde conteúdo que sai das bordas */
+}
+
+/* Cabeçalho da tabela */
+.table thead {
+    background-color: #343a40 !important; /* Fundo escuro */
+    color: white; /* Texto branco */
+}
+
+/* Linhas da tabela com hover */
+.table tbody tr:hover {
+    background-color: #f1f3f4; /* Cor de fundo ao passar o mouse */
+    cursor: pointer; /* Cursor vira ponteiro */
+}
+
+/* Estilos para alertas */
+.alert {
+    border-radius: 8px; /* Bordas arredondadas */
+    border: none; /* Remove borda padrão */
+    font-weight: 500; /* Texto meio-negrito */
+}
+
+/* Estilo para campos de formulário */
+.form-control {
+    border-radius: 6px; /* Bordas ligeiramente arredondadas */
+    border: 1px solid #ced4da; /* Borda cinza */
+    transition: border-color 0.3s ease; /* Transição suave para foco */
+}
+
+/* Campo focado */
+.form-control:focus {
+    border-color: #007bff; /* Borda azul no foco */
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); /* Brilho azul */
+}
+
+/* Labels dos formulários */
+.form-label {
+    font-weight: 600; /* Texto semi-negrito */
+    color: #495057; /* Cor escura */
+}
+
+/* Badges personalizados */
+.badge {
+    font-size: 0.85em; /* Tamanho da fonte menor */
+    padding: 0.5em 0.75em; /* Espaçamento interno */
+    border-radius: 6px; /* Bordas arredondadas */
+}
+
+/* Container principal */
+.container {
+    max-width: 1200px; /* Largura máxima */
+}
+
+/* Footer fixo */
+footer {
+    margin-top: auto; /* Empurra para o final */
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px; /* Padding lateral em mobile */
+    }
+    
+    .btn {
+        font-size: 0.9rem; /* Botões menores em mobile */
+        padding: 0.5rem 1rem; /* Padding menor */
+    }
+    
+    .table {
+        font-size: 0.9rem; /* Texto menor na tabela */
+    }
+}
+
+/* Animações para elementos que aparecem */
+.fade-in {
+    animation: fadeIn 0.5s ease-in; /* Animação de fade */
+}
+
+/* Keyframes para fade in */
+@keyframes fadeIn {
+    from { opacity: 0; } /* Começa transparente */
+    to { opacity: 1; }   /* Termina opaco */
+}
+
+/* Estilos para mensagens de erro */
+.text-danger {
+    font-weight: 600; /* Texto semi-negrito */
+}
+
+/* Estilos para estatísticas do dashboard */
+.stat-card {
+    color: white; /* Texto branco */
+    border-radius: 15px; /* Bordas bem arredondadas */
+    text-align: center; /* Texto centralizado */
+    transition: transform 0.3s ease; /* Transição para hover */
+    min-height: 150px; /* Altura mínima consistente */
+    height: 100%; /* Altura total do container */
+}
+
+/* Hover nas estatísticas */
+.stat-card:hover {
+    transform: scale(1.05); /* Aumenta ligeiramente */
+}
+
+/* Números grandes nas estatísticas */
+.stat-number {
+    font-size: 3rem; /* Fonte muito grande */
+    font-weight: bold; /* Negrito */
+    display: block; /* Bloco para quebra de linha */
+    margin-bottom: 0.5rem; /* Espaçamento inferior */
+}
+
+/* Labels das estatísticas */
+.stat-label {
+    font-size: 1.1rem; /* Fonte um pouco maior */
+    opacity: 0.9; /* Levemente transparente */
+    margin-bottom: 0.25rem; /* Espaçamento inferior */
+}
+
+/* Container do conteúdo das estatísticas */
+.stat-card .card-body {
+    display: flex; /* Flexbox */
+    flex-direction: column; /* Direção vertical */
+    align-items: center; /* Centraliza horizontalmente */
+    justify-content: center; /* Centraliza verticalmente */
+    height: 100%; /* Altura total */
+    padding: 1.5rem; /* Padding consistente */
+}
