@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Repositories\UserRepository;
+use App\Core\Logger;
 
 /**
  * AuthController - Controlador de Autenticação
@@ -72,6 +73,9 @@ class AuthController extends BaseController
             // Login bem-sucedido
             $this->createUserSession($user->toArray());
 
+            // Registra login no log
+            Logger::logLogin($username);
+
             // Mensagem de sucesso
             $_SESSION['success'] = 'Login realizado com sucesso! Bem-vindo(a), ' . $user->getNome();
 
@@ -79,6 +83,11 @@ class AuthController extends BaseController
             redirect('dashboard');
         } else {
             // Login falhou
+            Logger::warning("Tentativa de login falhou", [
+                'username' => $username,
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+            ]);
+
             $_SESSION['errors'] = ['Usuário ou senha inválidos'];
             $_SESSION['old_input'] = ['username' => $username];
 
@@ -91,6 +100,11 @@ class AuthController extends BaseController
      */
     public function logout(): void
     {
+        // Registra logout no log antes de destruir a sessão
+        if (isset($_SESSION['username'])) {
+            Logger::logLogout($_SESSION['username']);
+        }
+
         // Destroi todas as variáveis de sessão
         session_unset();
         session_destroy();

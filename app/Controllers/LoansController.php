@@ -6,6 +6,7 @@ use App\Models\Repositories\LoanRepository;
 use App\Models\Repositories\BookRepository;
 use App\Models\Repositories\MemberRepository;
 use App\Models\Entities\Loan;
+use App\Core\Logger;
 use DateTime;
 
 /**
@@ -131,9 +132,17 @@ class LoansController extends BaseController
 
             $db->commit();
 
+            // Registra no log
+            Logger::logLoanCreated($loanId, $bookId, $memberId);
+
             $_SESSION['success'] = 'Empréstimo registrado com sucesso!';
         } catch (\Exception $e) {
             $db->rollback();
+            Logger::error("Erro ao registrar empréstimo", [
+                'book_id' => $bookId,
+                'member_id' => $memberId,
+                'error' => $e->getMessage()
+            ]);
             $_SESSION['errors'] = ['Erro ao registrar empréstimo: ' . $e->getMessage()];
         }
 
@@ -180,9 +189,16 @@ class LoansController extends BaseController
 
             $db->commit();
 
+            // Registra no log
+            Logger::logLoanReturned($id);
+
             $_SESSION['success'] = 'Devolução registrada com sucesso!';
         } catch (\Exception $e) {
             $db->rollback();
+            Logger::error("Erro ao registrar devolução", [
+                'loan_id' => $id,
+                'error' => $e->getMessage()
+            ]);
             $_SESSION['errors'] = ['Erro ao registrar devolução: ' . $e->getMessage()];
         }
 

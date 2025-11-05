@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Models\Repositories\BookRepository;
 use App\Models\Entities\Book;
+use App\Core\Logger;
+use App\Core\Validator;
 use DateTime;
 
 /**
@@ -51,8 +53,6 @@ class BooksController extends BaseController
             redirect('books');
         }
 
-        $errors = [];
-
         // Obtém dados do formulário
         $titulo = trim($this->getPost('titulo', ''));
         $autor = trim($this->getPost('autor', ''));
@@ -63,32 +63,12 @@ class BooksController extends BaseController
         $quantidadeTotal = $this->getPost('quantidade_total', '');
         $localizacao = trim($this->getPost('localizacao', ''));
 
-        // Validações
-        if (empty($titulo)) {
-            $errors[] = 'Título é obrigatório';
-        }
-        if (empty($autor)) {
-            $errors[] = 'Autor é obrigatório';
-        }
-        if (empty($isbn)) {
-            $errors[] = 'ISBN é obrigatório';
-        } elseif ($this->bookRepository->isbnExists($isbn)) {
+        // Validações usando Validator
+        $errors = Validator::validateBook($_POST);
+
+        // Validação adicional: verifica se ISBN já existe
+        if (empty($errors) && $this->bookRepository->isbnExists($isbn)) {
             $errors[] = 'ISBN já cadastrado';
-        }
-        if (empty($editora)) {
-            $errors[] = 'Editora é obrigatória';
-        }
-        if (empty($anoPublicacao) || !is_numeric($anoPublicacao)) {
-            $errors[] = 'Ano de publicação deve ser um número';
-        }
-        if (empty($categoria)) {
-            $errors[] = 'Categoria é obrigatória';
-        }
-        if (empty($quantidadeTotal) || !is_numeric($quantidadeTotal) || $quantidadeTotal < 1) {
-            $errors[] = 'Quantidade deve ser um número maior que zero';
-        }
-        if (empty($localizacao)) {
-            $errors[] = 'Localização é obrigatória';
         }
 
         // Se há erros, volta para o formulário
@@ -115,8 +95,12 @@ class BooksController extends BaseController
         $bookId = $this->bookRepository->create($book);
 
         if ($bookId) {
+            // Registra no log
+            Logger::logBookCreated($bookId, $titulo);
+
             $_SESSION['success'] = 'Livro cadastrado com sucesso!';
         } else {
+            Logger::error("Erro ao cadastrar livro", ['titulo' => $titulo]);
             $_SESSION['errors'] = ['Erro ao cadastrar livro'];
         }
 
@@ -234,8 +218,12 @@ class BooksController extends BaseController
         $success = $this->bookRepository->update($currentBook);
 
         if ($success) {
+            // Registra no log
+            Logger::logBookUpdated($id, $titulo);
+
             $_SESSION['success'] = 'Livro atualizado com sucesso!';
         } else {
+            Logger::error("Erro ao atualizar livro", ['id' => $id, 'titulo' => $titulo]);
             $_SESSION['errors'] = ['Erro ao atualizar livro'];
         }
 
@@ -266,8 +254,12 @@ class BooksController extends BaseController
         $success = $this->bookRepository->delete($id);
 
         if ($success) {
+            // Registra no log
+            Logger::logBookDeleted($id);
+
             $_SESSION['success'] = 'Livro removido com sucesso!';
         } else {
+            Logger::error("Erro ao remover livro", ['id' => $id]);
             $_SESSION['errors'] = ['Erro ao remover livro'];
         }
 

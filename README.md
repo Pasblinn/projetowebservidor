@@ -33,10 +33,17 @@ Começamos com uma versão mais simples e fomos melhorando ao longo do desenvolv
 - JavaScript
 - Bootstrap 5 (para deixar bonito e responsivo)
 
-### Ferramentas
-- Composer (gerenciador de dependências do PHP)
-- Apache (servidor web)
-- PDO (para conectar com o banco de forma segura)
+### Ferramentas e Packages
+- **Composer** (gerenciador de dependências do PHP)
+- **Apache** (servidor web)
+- **PDO** (para conectar com o banco de forma segura)
+
+### Packages Composer Utilizados
+- **vlucas/phpdotenv** (^5.6) - Gerenciamento de variáveis de ambiente (.env)
+- **monolog/monolog** (^3.9) - Sistema profissional de logs
+- **ramsey/uuid** (^4.9) - Geração de identificadores únicos (UUIDs)
+- **respect/validation** (^2.4) - Biblioteca robusta de validação de dados
+- **symfony/var-dumper** (^6.4 - dev) - Ferramentas de debug para desenvolvimento
 
 ## Estrutura do Código
 
@@ -48,13 +55,17 @@ app/
 ├── Models/
 │   ├── Entities/    # Representam objetos (Livro, Membro, etc)
 │   └── Repositories/# Fazem as consultas no banco
-├── Core/            # Classes principais (Router, Database)
+├── Core/            # Classes principais (Router, Database, Logger, Validator)
 ├── views/           # Páginas HTML que o usuário vê
-└── Config/          # Configurações e rotas
+├── Config/          # Configurações e rotas
+└── Helpers/         # Funções auxiliares
 
 database/
 ├── schema.sql       # Script que cria as tabelas
 └── seed.sql         # Dados de exemplo para testar
+
+storage/
+└── logs/            # Arquivos de log do sistema
 ```
 
 ## Banco de Dados
@@ -82,6 +93,25 @@ Todo o código usa classes e objetos. Por exemplo, quando buscamos um livro no b
 
 ### PDO e Segurança
 Usamos PDO com prepared statements em todas as consultas ao banco para prevenir SQL injection. As senhas são criptografadas com `password_hash()`.
+
+### Sistema de Logs (Monolog)
+Implementamos um sistema profissional de logs que registra:
+- Todas as operações de login/logout
+- Criação, edição e exclusão de livros
+- Registro e devolução de empréstimos
+- Erros e exceções do sistema
+
+Os logs ficam armazenados em `storage/logs/app.log` com rotação diária (mantém 30 dias).
+
+### Validação de Dados (Respect\Validation)
+Utilizamos a biblioteca Respect\Validation para validações robustas:
+- Validação de CPF brasileiro
+- Validação de email
+- Validação de ISBN (10 ou 13 dígitos)
+- Validação de telefone
+- Validações personalizadas de livros e membros
+
+Isso garante dados consistentes e seguros no sistema.
 
 ## Instalação
 
@@ -115,7 +145,12 @@ composer install
 ```
 
 Isso vai:
-- Baixar o package `vlucas/phpdotenv` (gerencia variáveis de ambiente)
+- Baixar todos os packages necessários:
+  - `vlucas/phpdotenv` - Gerencia variáveis de ambiente
+  - `monolog/monolog` - Sistema de logs
+  - `ramsey/uuid` - Geração de UUIDs
+  - `respect/validation` - Validação de dados
+  - `symfony/var-dumper` - Debug (apenas dev)
 - Criar a pasta `vendor/` com todas as dependências
 - Configurar o autoload PSR-4
 
@@ -309,13 +344,25 @@ Trabalhei mais na parte visual e banco de dados:
 ## Observações Técnicas
 
 O projeto atende todos os requisitos da disciplina:
-- PHP 8+ com orientação a objetos
-- Composer com autoload (PSR-4)
-- Banco de dados MySQL via PDO
-- Sistema de rotas (URLs transparentes)
-- Padrão MVC
-- Validações no servidor
-- Interface adequada com feedback visual
+- ✅ **PHP 8+** com orientação a objetos completa (classes, interfaces, namespaces, herança)
+- ✅ **Composer** com autoload PSR-4 e uso de 5 packages externos
+- ✅ **Banco de dados MySQL** via PDO com prepared statements
+- ✅ **Sistema de rotas** próprio para URLs transparentes
+- ✅ **Padrão MVC** completo (Models, Views, Controllers + Repository pattern)
+- ✅ **Validações robustas** no servidor usando Respect\Validation
+- ✅ **Sistema de logs** profissional com Monolog
+- ✅ **Interface adequada** com Bootstrap 5 e feedback visual
+- ✅ **Documentação completa** de instalação e configuração
+
+### Uso dos Packages Composer
+
+O projeto demonstra uso real e prático de packages Composer:
+
+1. **vlucas/phpdotenv**: Usado em `index.php` para carregar configurações do `.env`
+2. **monolog/monolog**: Sistema de logs em `app/Core/Logger.php`, usado em todos os controllers
+3. **respect/validation**: Validações em `app/Core/Validator.php`, usado para validar CPF, email, ISBN, etc.
+4. **ramsey/uuid**: Disponível para geração de identificadores únicos
+5. **symfony/var-dumper**: Ferramenta de debug para desenvolvimento
 
 Tentamos seguir boas práticas de desenvolvimento, separando bem as responsabilidades de cada parte do código e pensando em segurança (principalmente contra SQL injection e XSS).
 
@@ -326,8 +373,11 @@ Durante o desenvolvimento, fomos evoluindo o projeto:
 - Começamos guardando dados em arrays de sessão, depois migramos para banco de dados real
 - Melhoramos a organização do código, separando em camadas (MVC + Repository)
 - Adicionamos o Composer para gerenciar dependências
+- Implementamos packages Composer úteis (Monolog, Respect\Validation, etc.)
 - Criamos um sistema de rotas próprio para URLs mais limpas
 - Aplicamos tipagem forte nas classes para aproveitar recursos do PHP 8
+- Adicionamos sistema de logs profissional
+- Implementamos validações robustas com biblioteca externa
 - Melhoramos a interface usando Bootstrap
 
 ## Repositório

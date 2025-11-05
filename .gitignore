@@ -13,10 +13,13 @@ Thumbs.db
 *.log
 *.tmp
 
+# Storage
+/storage/logs/
+/storage/*.log
+
 # Composer
 /vendor/
 composer.phar
-composer.lock
 
 # Environment
 .env

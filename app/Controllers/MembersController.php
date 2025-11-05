@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Models\Repositories\MemberRepository;
 use App\Models\Entities\Member;
+use App\Core\Logger;
+use App\Core\Validator;
 use DateTime;
 
 /**
@@ -51,8 +53,6 @@ class MembersController extends BaseController
             redirect('members');
         }
 
-        $errors = [];
-
         // Obtém dados do formulário
         $nome = trim($this->getPost('nome', ''));
         $email = trim($this->getPost('email', ''));
@@ -62,33 +62,17 @@ class MembersController extends BaseController
         $dataNascimento = $this->getPost('data_nascimento', '');
         $categoria = $this->getPost('categoria', '');
 
-        // Validações
-        if (empty($nome)) {
-            $errors[] = 'Nome é obrigatório';
-        }
-        if (empty($email)) {
-            $errors[] = 'Email é obrigatório';
-        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = 'Email inválido';
-        } elseif ($this->memberRepository->emailExists($email)) {
-            $errors[] = 'Email já cadastrado';
-        }
-        if (empty($telefone)) {
-            $errors[] = 'Telefone é obrigatório';
-        }
-        if (empty($endereco)) {
-            $errors[] = 'Endereço é obrigatório';
-        }
-        if (empty($cpf)) {
-            $errors[] = 'CPF é obrigatório';
-        } elseif ($this->memberRepository->cpfExists($cpf)) {
-            $errors[] = 'CPF já cadastrado';
-        }
-        if (empty($dataNascimento)) {
-            $errors[] = 'Data de nascimento é obrigatória';
-        }
-        if (empty($categoria)) {
-            $errors[] = 'Categoria é obrigatória';
+        // Validações usando Validator
+        $errors = Validator::validateMember($_POST);
+
+        // Validações adicionais: verifica se email e CPF já existem
+        if (empty($errors)) {
+            if ($this->memberRepository->emailExists($email)) {
+                $errors[] = 'Email já cadastrado';
+            }
+            if ($this->memberRepository->cpfExists($cpf)) {
+                $errors[] = 'CPF já cadastrado';
+            }
         }
 
         // Se há erros, volta para o formulário
