@@ -3,7 +3,6 @@
 namespace App\Core;
 
 use Respect\Validation\Validator as v;
-use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Validator - Sistema de validação usando Respect\Validation
@@ -21,9 +20,9 @@ class Validator
     public static function validateCPF(string $cpf): bool
     {
         try {
-            v::cpf()->assert($cpf);
+            v::cpf()->check($cpf);
             return true;
-        } catch (ValidationException $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -34,9 +33,9 @@ class Validator
     public static function validateEmail(string $email): bool
     {
         try {
-            v::email()->assert($email);
+            v::email()->check($email);
             return true;
-        } catch (ValidationException $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -49,17 +48,8 @@ class Validator
         // Remove hífens e espaços
         $isbn = preg_replace('/[\s-]+/', '', $isbn);
 
-        try {
-            // ISBN pode ter 10 ou 13 dígitos
-            v::oneOf(
-                v::isbn(10),
-                v::isbn(13)
-            )->assert($isbn);
-            return true;
-        } catch (ValidationException $e) {
-            // Validação alternativa simples
-            return (strlen($isbn) === 10 || strlen($isbn) === 13) && ctype_alnum($isbn);
-        }
+        // Validação simples de ISBN (10 ou 13 dígitos alfanuméricos)
+        return (strlen($isbn) === 10 || strlen($isbn) === 13) && ctype_alnum($isbn);
     }
 
     /**
@@ -70,14 +60,8 @@ class Validator
         // Remove caracteres não numéricos
         $phone = preg_replace('/[^0-9]/', '', $phone);
 
-        try {
-            // Telefone deve ter 10 ou 11 dígitos (DDD + número)
-            v::phone('BR')->assert($phone);
-            return true;
-        } catch (ValidationException $e) {
-            // Validação alternativa
-            return strlen($phone) >= 10 && strlen($phone) <= 11;
-        }
+        // Validação simples: 10 ou 11 dígitos (DDD + número)
+        return strlen($phone) >= 10 && strlen($phone) <= 11;
     }
 
     /**
@@ -199,9 +183,9 @@ class Validator
     public static function required(mixed $value): bool
     {
         try {
-            v::notEmpty()->assert($value);
+            v::notEmpty()->check($value);
             return true;
-        } catch (ValidationException $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -212,9 +196,9 @@ class Validator
     public static function positiveInteger(mixed $value): bool
     {
         try {
-            v::intVal()->positive()->assert($value);
+            v::intVal()->positive()->check($value);
             return true;
-        } catch (ValidationException $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -225,9 +209,9 @@ class Validator
     public static function validateDate(string $date): bool
     {
         try {
-            v::date('Y-m-d')->assert($date);
+            v::date('Y-m-d')->check($date);
             return true;
-        } catch (ValidationException $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -238,9 +222,9 @@ class Validator
     public static function validateUrl(string $url): bool
     {
         try {
-            v::url()->assert($url);
+            v::url()->check($url);
             return true;
-        } catch (ValidationException $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
