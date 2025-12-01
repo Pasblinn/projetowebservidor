@@ -1,0 +1,352 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-01-15T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "req_auth_login",
+      "parentId": "fld_auth",
+      "type": "Request",
+      "name": "Login",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"username\": \"admin\",\n  \"password\": \"password\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_auth_logout",
+      "parentId": "fld_auth",
+      "type": "Request",
+      "name": "Logout",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/logout",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ]
+    },
+    {
+      "_id": "req_auth_me",
+      "parentId": "fld_auth",
+      "type": "Request",
+      "name": "Me (User Info)",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/me",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ]
+    },
+    {
+      "_id": "req_books_index",
+      "parentId": "fld_books",
+      "type": "Request",
+      "name": "List Books",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/books",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ]
+    },
+    {
+      "_id": "req_books_show",
+      "parentId": "fld_books",
+      "type": "Request",
+      "name": "Get Book",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/books/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ]
+    },
+    {
+      "_id": "req_books_store",
+      "parentId": "fld_books",
+      "type": "Request",
+      "name": "Create Book",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/books",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"titulo\": \"Clean Code\",\n  \"autor\": \"Robert C. Martin\",\n  \"isbn\": \"9780132350884\",\n  \"editora\": \"Prentice Hall\",\n  \"ano_publicacao\": 2008,\n  \"categoria\": \"Tecnologia\",\n  \"quantidade_total\": 3,\n  \"quantidade_disponivel\": 3,\n  \"localizacao\": \"Estante A\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_books_update",
+      "parentId": "fld_books",
+      "type": "Request",
+      "name": "Update Book",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/api/books/1",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"quantidade_total\": 5,\n  \"quantidade_disponivel\": 4\n}"
+      },
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_books_delete",
+      "parentId": "fld_books",
+      "type": "Request",
+      "name": "Delete Book",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/api/books/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ]
+    },
+    {
+      "_id": "req_members_index",
+      "parentId": "fld_members",
+      "type": "Request",
+      "name": "List Members",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/members",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ]
+    },
+    {
+      "_id": "req_members_show",
+      "parentId": "fld_members",
+      "type": "Request",
+      "name": "Get Member",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/members/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ]
+    },
+    {
+      "_id": "req_members_store",
+      "parentId": "fld_members",
+      "type": "Request",
+      "name": "Create Member",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/members",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"João Silva\",\n  \"email\": \"joao@email.com\",\n  \"telefone\": \"(42) 99999-9999\",\n  \"endereco\": \"Rua A, 123\",\n  \"cpf\": \"123.456.789-00\",\n  \"data_nascimento\": \"1990-01-15\",\n  \"categoria\": \"estudante\",\n  \"ativo\": true\n}"
+      },
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_members_update",
+      "parentId": "fld_members",
+      "type": "Request",
+      "name": "Update Member",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/api/members/1",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"telefone\": \"(42) 98888-8888\",\n  \"endereco\": \"Rua B, 456\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_members_delete",
+      "parentId": "fld_members",
+      "type": "Request",
+      "name": "Delete Member",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/api/members/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ]
+    },
+    {
+      "_id": "req_loans_index",
+      "parentId": "fld_loans",
+      "type": "Request",
+      "name": "List Loans",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/loans",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ]
+    },
+    {
+      "_id": "req_loans_show",
+      "parentId": "fld_loans",
+      "type": "Request",
+      "name": "Get Loan",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/loans/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ]
+    },
+    {
+      "_id": "req_loans_store",
+      "parentId": "fld_loans",
+      "type": "Request",
+      "name": "Create Loan",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/loans",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"member_id\": 1,\n  \"book_id\": 1,\n  \"data_emprestimo\": \"2025-01-15\",\n  \"data_prevista_devolucao\": \"2025-01-29\",\n  \"usuario_responsavel\": \"admin\",\n  \"observacoes\": \"Primeira renovação\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_loans_update",
+      "parentId": "fld_loans",
+      "type": "Request",
+      "name": "Return Loan (Update)",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/api/loans/1",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"data_devolucao\": \"2025-01-25\",\n  \"status\": \"devolvido\",\n  \"observacoes\": \"Devolvido em perfeito estado\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_loans_delete",
+      "parentId": "fld_loans",
+      "type": "Request",
+      "name": "Delete Loan",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/api/loans/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ]
+    },
+    {
+      "_id": "fld_auth",
+      "parentId": "wrk_main",
+      "type": "RequestGroup",
+      "name": "Auth"
+    },
+    {
+      "_id": "fld_books",
+      "parentId": "wrk_main",
+      "type": "RequestGroup",
+      "name": "Books"
+    },
+    {
+      "_id": "fld_members",
+      "parentId": "wrk_main",
+      "type": "RequestGroup",
+      "name": "Members"
+    },
+    {
+      "_id": "fld_loans",
+      "parentId": "wrk_main",
+      "type": "RequestGroup",
+      "name": "Loans"
+    },
+    {
+      "_id": "wrk_main",
+      "type": "Workspace",
+      "name": "Biblioteca API",
+      "description": "API REST - Sistema de Gerenciamento de Biblioteca"
+    },
+    {
+      "_id": "env_main",
+      "parentId": "wrk_main",
+      "type": "Environment",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost/projetowebservidor-main/biblioteca-api/public",
+        "token": ""
+      }
+    }
+  ]
+}
