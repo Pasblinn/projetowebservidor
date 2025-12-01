@@ -12,9 +12,25 @@
 
 ## Sobre o Projeto
 
-Este é um sistema web para gerenciar bibliotecas, desenvolvido em PHP usando orientação a objetos e banco de dados MySQL. O projeto permite cadastrar livros, membros e controlar empréstimos de forma completa.
+Este é um sistema completo para gerenciar bibliotecas, desenvolvido em **duas versões**:
 
-Começamos com uma versão mais simples e fomos melhorando ao longo do desenvolvimento, adicionando recursos mais avançados como rotas limpas, arquitetura MVC e integração com banco de dados real.
+1. **Sistema Web (PHP Puro + MVC)** - Interface web tradicional com autenticação e dashboard
+2. **API REST (Laravel 9)** - API moderna para integração com aplicativos mobile, SPAs, etc.
+
+O projeto permite cadastrar livros, membros e controlar empréstimos de forma completa, seguindo boas práticas de desenvolvimento e arquitetura de software.
+
+### Estrutura do Repositório
+
+```
+projetowebservidor-main/
+├── app/                    # Sistema Web (PHP Puro + MVC)
+├── database/              # Scripts SQL compartilhados
+├── storage/               # Logs do sistema web
+├── biblioteca-api/        # API REST Laravel 9
+├── test_api_simple.php    # Script de testes simples da API
+├── test_api_complete.php  # Script com 31 testes completos
+└── README.md              # Este arquivo
+```
 
 ## O que o sistema faz
 
@@ -283,7 +299,296 @@ Ou:
 **Páginas sem estilo (CSS):**
 - Solução: Ajuste o `BASE_PATH` no arquivo `.env`
 
+---
+
+## 🚀 API REST (Laravel 9)
+
+### Sobre a API
+
+A API REST foi desenvolvida com **Laravel 9** e **Laravel Sanctum** para autenticação via token bearer. Ela oferece os mesmos recursos do sistema web, mas através de endpoints JSON para integração com aplicações mobile, SPAs (Single Page Applications) ou qualquer cliente HTTP.
+
+### Recursos da API
+
+- ✅ **Autenticação via Token Bearer** (Laravel Sanctum)
+- ✅ **CRUD Completo** para Books, Members e Loans
+- ✅ **Relacionamentos Eloquent** com eager loading
+- ✅ **Validações Robustas** (Request Validation do Laravel)
+- ✅ **Respostas JSON Padronizadas** (Trait ApiResponse)
+- ✅ **Lógica de Negócio** (gerenciamento automático de estoque de livros)
+- ✅ **Códigos HTTP Corretos** (200, 201, 400, 401, 404, 422)
+- ✅ **Documentação Completa** + Coleções Postman/Insomnia
+
+### Instalação da API
+
+#### 1. Navegar para a pasta da API
+
+```bash
+cd biblioteca-api
+```
+
+#### 2. Instalar Dependências do Laravel
+
+```bash
+composer install
+```
+
+#### 3. Configurar .env da API
+
+Copie o arquivo de exemplo:
+```bash
+cp .env.example .env
+```
+
+Edite `biblioteca-api/.env` com as configurações do banco:
+```env
+DB_CONNECTION=mysql
+DB_HOST=localhost
+DB_PORT=3306
+DB_DATABASE=biblioteca     # Mesmo banco do sistema web
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+#### 4. Criar Tabela do Sanctum
+
+A API precisa da tabela `personal_access_tokens`:
+
+```bash
+php artisan migrate
+```
+
+**Se der erro**, crie manualmente via phpMyAdmin ou MySQL:
+```sql
+CREATE TABLE personal_access_tokens (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  tokenable_type VARCHAR(255) NOT NULL,
+  tokenable_id BIGINT UNSIGNED NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  token VARCHAR(64) NOT NULL UNIQUE,
+  abilities TEXT NULL,
+  last_used_at TIMESTAMP NULL,
+  expires_at TIMESTAMP NULL,
+  created_at TIMESTAMP NULL,
+  updated_at TIMESTAMP NULL,
+  INDEX personal_access_tokens_tokenable_type_tokenable_id_index (tokenable_type, tokenable_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+#### 5. Iniciar Servidor da API
+
+```bash
+php artisan serve
+```
+
+A API estará disponível em: `http://localhost:8000`
+
+### Endpoints da API
+
+| Método | Endpoint | Descrição | Autenticação |
+|--------|----------|-----------|--------------|
+| POST | `/api/login` | Login (retorna token) | ❌ Pública |
+| POST | `/api/logout` | Logout (revoga token) | ✅ Token |
+| GET | `/api/me` | Info do usuário logado | ✅ Token |
+| GET | `/api/books` | Listar todos os livros | ✅ Token |
+| POST | `/api/books` | Criar livro | ✅ Token |
+| GET | `/api/books/{id}` | Buscar livro por ID | ✅ Token |
+| PUT | `/api/books/{id}` | Atualizar livro | ✅ Token |
+| DELETE | `/api/books/{id}` | Deletar livro | ✅ Token |
+| GET | `/api/members` | Listar todos os membros | ✅ Token |
+| POST | `/api/members` | Criar membro | ✅ Token |
+| GET | `/api/members/{id}` | Buscar membro por ID | ✅ Token |
+| PUT | `/api/members/{id}` | Atualizar membro | ✅ Token |
+| DELETE | `/api/members/{id}` | Deletar membro | ✅ Token |
+| GET | `/api/loans` | Listar empréstimos | ✅ Token |
+| POST | `/api/loans` | Criar empréstimo | ✅ Token |
+| GET | `/api/loans/{id}` | Buscar empréstimo por ID | ✅ Token |
+| PUT | `/api/loans/{id}` | Registrar devolução | ✅ Token |
+| DELETE | `/api/loans/{id}` | Deletar empréstimo | ✅ Token |
+
+### Credenciais da API
+
+- **Usuário:** `admin`
+- **Senha:** `password`
+
+### Testando a API
+
+#### Opção 1: Postman ou Insomnia
+
+**Importar coleção:**
+- Postman: `biblioteca-api/postman_collection.json`
+- Insomnia: `biblioteca-api/insomnia_collection.json`
+
+**Configurar:**
+1. Importe a coleção
+2. Configure `base_url`: `http://localhost:8000`
+3. Execute o request "Login"
+4. O token será salvo automaticamente
+5. Teste os outros endpoints
+
+#### Opção 2: Scripts PHP (Testes Automatizados)
+
+**Testes Simples (5 testes básicos):**
+```bash
+php test_api_simple.php
+```
+
+**Testes Completos (31 testes):**
+```bash
+php test_api_complete.php
+```
+
+Resultado esperado: `✅ TODOS OS 31 TESTES PASSARAM!`
+
+#### Opção 3: cURL (Linha de Comando)
+
+**Login:**
+```bash
+curl -X POST http://localhost:8000/api/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"password"}'
+```
+
+**Listar livros (substitua {TOKEN}):**
+```bash
+curl -X GET http://localhost:8000/api/books \
+  -H "Authorization: Bearer {TOKEN}"
+```
+
+### Exemplo Completo de Uso
+
+**1. Fazer Login:**
+```http
+POST /api/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "password"
+}
+```
+
+**Resposta:**
+```json
+{
+  "success": true,
+  "message": "Login realizado com sucesso",
+  "data": {
+    "user": {
+      "id": 1,
+      "username": "admin",
+      "nome": "Administrador",
+      "tipo": "admin"
+    },
+    "token": "1|abc123xyz..."
+  }
+}
+```
+
+**2. Criar um Livro:**
+```http
+POST /api/books
+Authorization: Bearer {token_do_login}
+Content-Type: application/json
+
+{
+  "titulo": "Clean Code",
+  "autor": "Robert C. Martin",
+  "isbn": "9780132350884",
+  "editora": "Prentice Hall",
+  "ano_publicacao": 2008,
+  "categoria": "Tecnologia",
+  "quantidade_total": 3,
+  "quantidade_disponivel": 3,
+  "localizacao": "Estante A"
+}
+```
+
+**Resposta:**
+```json
+{
+  "success": true,
+  "message": "Livro criado com sucesso",
+  "data": {
+    "id": 6,
+    "titulo": "Clean Code",
+    "autor": "Robert C. Martin",
+    "isbn": "9780132350884",
+    ...
+  }
+}
+```
+
+**3. Criar Empréstimo (Decrementa Estoque Automaticamente):**
+```http
+POST /api/loans
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "member_id": 1,
+  "book_id": 6,
+  "data_emprestimo": "2025-01-15",
+  "data_prevista_devolucao": "2025-01-29",
+  "usuario_responsavel": "admin",
+  "observacoes": "Primeiro empréstimo"
+}
+```
+
+A API automaticamente:
+- ✅ Verifica se o livro está disponível
+- ✅ Cria o empréstimo
+- ✅ **Decrementa** `quantidade_disponivel` do livro
+
+**4. Registrar Devolução (Incrementa Estoque Automaticamente):**
+```http
+PUT /api/loans/1
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "data_devolucao": "2025-01-25",
+  "status": "devolvido",
+  "observacoes": "Devolvido em perfeito estado"
+}
+```
+
+A API automaticamente:
+- ✅ Atualiza o empréstimo
+- ✅ **Incrementa** `quantidade_disponivel` do livro
+- ✅ Impede devoluções duplicadas
+
+### Documentação Completa da API
+
+Para mais detalhes, consulte:
+```
+biblioteca-api/README.md
+```
+
+### Problemas Comuns da API
+
+**Erro "Table personal_access_tokens doesn't exist":**
+```bash
+cd biblioteca-api
+php artisan migrate
+```
+
+Ou crie manualmente (SQL acima).
+
+**Erro "Unauthenticated":**
+- Certifique-se de enviar o header: `Authorization: Bearer {token}`
+- Verifique se fez login e obteve o token
+
+**Servidor não inicia:**
+```bash
+cd biblioteca-api  # Certifique-se de estar na pasta correta
+php artisan serve
+```
+
+---
+
 ## Funcionalidades Principais
+
+### Sistema Web
 
 ### Livros
 - Listagem com todos os livros cadastrados
@@ -317,6 +622,7 @@ Ou:
 ### Pablo Juan Tadini Soto
 Fiquei responsável pela parte mais técnica do backend:
 
+**Sistema Web (PHP Puro):**
 - Criei toda a estrutura de classes com namespaces e orientação a objetos
 - Implementei o sistema de rotas do zero (Router.php)
 - Fiz a integração com o banco usando PDO (Database.php com Singleton)
@@ -325,6 +631,18 @@ Fiquei responsável pela parte mais técnica do backend:
 - Implementei a lógica dos Controllers
 - Configurei o Composer com autoload PSR-4
 - Integrei o sistema de .env para configurações
+
+**API REST (Laravel 9):**
+- Estruturei toda a API REST com Laravel 9
+- Implementei autenticação via Laravel Sanctum (bearer tokens)
+- Criei Controllers da API (AuthController, BookController, MemberController, LoanController)
+- Desenvolvi Models Eloquent com relacionamentos
+- Implementei lógica de negócio (gerenciamento automático de estoque)
+- Criei validações de Request do Laravel
+- Desenvolvi Trait ApiResponse para padronização de respostas JSON
+- Configurei rotas da API e middleware de autenticação
+- Criei coleções de teste (Postman/Insomnia)
+- Desenvolvi scripts automatizados de testes (31 testes completos)
 
 ### Vinícius Istchuk Volpato
 Trabalhei mais na parte visual e banco de dados:
