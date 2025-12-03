@@ -1,7 +1,7 @@
 <?php
 
 function makeRequest($method, $endpoint, $data = null, $token = null) {
-    $url = 'http://127.0.0.1:8000/api' . $endpoint;
+    $url = 'http://localhost/projetowebservidor-main/biblioteca-api/public/api' . $endpoint;
 
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

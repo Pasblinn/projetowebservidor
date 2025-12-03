@@ -5,7 +5,7 @@ echo "=================================\n\n";
 
 // Teste 1: Login
 echo "1. Fazendo login...\n";
-$ch = curl_init('http://127.0.0.1:8000/api/login');
+$ch = curl_init('http://localhost/projetowebservidor-main/biblioteca-api/public/api/login');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'Accept: application/json']);
@@ -22,7 +22,7 @@ if ($httpCode === 200) {
 
     // Teste 2: Listar livros
     echo "2. Listando livros...\n";
-    $ch = curl_init('http://127.0.0.1:8000/api/books');
+    $ch = curl_init('http://localhost/projetowebservidor-main/biblioteca-api/public/api/books');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         'Accept: application/json',
@@ -41,7 +41,7 @@ if ($httpCode === 200) {
 
     // Teste 3: Listar membros
     echo "3. Listando membros...\n";
-    $ch = curl_init('http://127.0.0.1:8000/api/members');
+    $ch = curl_init('http://localhost/projetowebservidor-main/biblioteca-api/public/api/members');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         'Accept: application/json',
@@ -60,7 +60,7 @@ if ($httpCode === 200) {
 
     // Teste 4: Listar empréstimos
     echo "4. Listando empréstimos...\n";
-    $ch = curl_init('http://127.0.0.1:8000/api/loans');
+    $ch = curl_init('http://localhost/projetowebservidor-main/biblioteca-api/public/api/loans');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         'Accept: application/json',
@@ -79,7 +79,7 @@ if ($httpCode === 200) {
 
     // Teste 5: Obter informações do usuário
     echo "5. Obtendo informações do usuário logado...\n";
-    $ch = curl_init('http://127.0.0.1:8000/api/me');
+    $ch = curl_init('http://localhost/projetowebservidor-main/biblioteca-api/public/api/me');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         'Accept: application/json',
