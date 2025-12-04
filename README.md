@@ -168,48 +168,30 @@ Isso vai:
 
 #### 3. Configurar o Banco de Dados
 
-**3.1. Criar o banco:**
+**IMPORTANTE:** O banco de dados está incluído no projeto na pasta `database/`.
+
+**Opção 1 - Importar tudo de uma vez (RECOMENDADO):**
 
 Via phpMyAdmin (http://localhost/phpmyadmin):
-1. Clique em "Novo"
-2. Nome: `biblioteca`
-3. Collation: `utf8mb4_unicode_ci`
-4. Clique em "Criar"
+1. Clique em "Importar"
+2. Escolha o arquivo `database/biblioteca.sql`
+3. Clique em "Executar"
 
 Ou via linha de comando:
 ```bash
-mysql -u root -p
-CREATE DATABASE biblioteca CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-EXIT;
+mysql -u root -p < database/biblioteca.sql
 ```
 
-**3.2. Criar as tabelas:**
+Este arquivo cria o banco `biblioteca` com todas as tabelas (users, books, members, loans, personal_access_tokens) e insere dados de exemplo (2 usuários, 5 livros, 3 membros).
 
-No phpMyAdmin:
-1. Selecione o banco `biblioteca`
-2. Vá na aba "SQL"
-3. Abra o arquivo `database/schema.sql` e copie todo o conteúdo
-4. Cole e clique em "Executar"
+**Opção 2 - Passo a passo:**
 
-Ou via linha de comando:
-```bash
-mysql -u root -p biblioteca < database/schema.sql
-```
+1. Criar estrutura: `mysql -u root -p < database/schema.sql`
+2. Inserir dados: `mysql -u root -p biblioteca < database/seed.sql`
 
-Isso cria as 4 tabelas: `users`, `books`, `members` e `loans`
-
-**3.3. Inserir dados de exemplo:**
-
-Ainda no phpMyAdmin, aba "SQL":
-1. Copie o conteúdo de `database/seed.sql`
-2. Cole e execute
-
-Ou via linha de comando:
-```bash
-mysql -u root -p biblioteca < database/seed.sql
-```
-
-Isso adiciona 2 usuários, 5 livros, 3 membros e alguns empréstimos de exemplo.
+**Credenciais dos usuários de teste:**
+- Usuário: `admin` / Senha: `admin123`
+- Usuário: `bibliotecario` / Senha: `admin123`
 
 #### 4. Configurar o Arquivo .env
 
