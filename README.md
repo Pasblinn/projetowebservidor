@@ -374,13 +374,18 @@ CREATE TABLE personal_access_tokens (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
-#### 5. Iniciar Servidor da API
+#### 5. Acessar a API
 
-```bash
-php artisan serve
+A API roda através do **Apache do XAMPP** (mesma porta do sistema web).
+
+**URL Base da API:**
+```
+http://localhost/projetowebservidor-main/biblioteca-api/public/api
 ```
 
-A API estará disponível em: `http://localhost:8000`
+**Certifique-se que:**
+- Apache está rodando no XAMPP Control Panel
+- A pasta do projeto está em `C:\xampp\htdocs\projetowebservidor-main`
 
 ### Endpoints da API
 
@@ -420,7 +425,7 @@ A API estará disponível em: `http://localhost:8000`
 
 **Configurar:**
 1. Importe a coleção
-2. Configure `base_url`: `http://localhost:8000`
+2. Configure `base_url`: `http://localhost/projetowebservidor-main/biblioteca-api/public`
 3. Execute o request "Login"
 4. O token será salvo automaticamente
 5. Teste os outros endpoints
@@ -443,14 +448,14 @@ Resultado esperado: `✅ TODOS OS 31 TESTES PASSARAM!`
 
 **Login:**
 ```bash
-curl -X POST http://localhost:8000/api/login \
+curl -X POST http://localhost/projetowebservidor-main/biblioteca-api/public/api/login \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"password"}'
 ```
 
 **Listar livros (substitua {TOKEN}):**
 ```bash
-curl -X GET http://localhost:8000/api/books \
+curl -X GET http://localhost/projetowebservidor-main/biblioteca-api/public/api/books \
   -H "Authorization: Bearer {TOKEN}"
 ```
 
